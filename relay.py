@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 # murmur - 4-channel relay board
 # 12/7/17
-# updated: 12/9/17
+# updated: 1/11/18
+
+# find GPIO pin mappings here:
+# https://gpiozero.readthedocs.io/en/stable/recipes.html#pin-numbering
 
 import time
 import gpiozero
@@ -37,15 +40,13 @@ class Relay(gpiozero.OutputDevice):
         test the pi's ability to control a relay
         do this BEFORE hooking up anything to the relay and watch LED on the relay board
         '''
+
         self.toggle()
         time.sleep(1)
         self.toggle()
 
 
 if __name__ == '__main__':
-    # find GPIO pin mappings here:
-    # https://gpiozero.readthedocs.io/en/stable/recipes.html#pin-numbering
-
     pins = [4, 5, 6, 13]  # list to store GPIO pins being used
     relays = [Relay(pin) for pin in pins]  # list to hold initialized Relay objects
 
