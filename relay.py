@@ -6,6 +6,8 @@
 # find GPIO pin mappings here:
 # https://gpiozero.readthedocs.io/en/stable/recipes.html#pin-numbering
 
+# TODO: implement _set_state() as a decorator
+
 import time
 import gpiozero
 
@@ -32,20 +34,27 @@ class Relay(gpiozero.OutputDevice):
         self.board_type = board_type.lower()
         self.active_high = self._set_active_high()
         gpiozero.OutputDevice.__init__(self, self.GPIO_pin, active_high=self.active_high, *args, **kwargs)
-        self.state = self.value
+        self.state = self._set_state()
 
     def _set_active_high(self):
         return False if self.board_type == 'sainsmart' else True
 
+    def _set_state(self):
+        self.state = self.value
+
     def activate(self):
         self.on()
+        self._set_state()
 
     def deactivate(self):
         self.off()
+        self._set_state
+
+    def toggle(self):
+        self.toggle()
+        self._set_state()
 
     def get_state(self):
-        self.state = self.value
-
         return self.state
 
     def test_connection(self):
