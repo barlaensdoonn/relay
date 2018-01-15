@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # murmur - 4-channel relay board
 # 12/7/17
-# updated: 1/11/18
+# updated: 1/15/18
 
 # find GPIO pin mappings here:
 # https://gpiozero.readthedocs.io/en/stable/recipes.html#pin-numbering
@@ -28,12 +28,25 @@ class Relay(gpiozero.OutputDevice):
         active_high=False initializes the Sainsmart relays as off
         '''
 
+        self.GPIO_pin = pin
         self.board_type = board_type.lower()
         self.active_high = self._set_active_high()
-        gpiozero.OutputDevice.__init__(self, pin, active_high=self.active_high, *args, **kwargs)
+        gpiozero.OutputDevice.__init__(self, self.GPIO_pin, active_high=self.active_high, *args, **kwargs)
+        self.state = self.value
 
     def _set_active_high(self):
         return False if self.board_type == 'sainsmart' else True
+
+    def activate(self):
+        self.on()
+
+    def deactivate(self):
+        self.off()
+
+    def get_state(self):
+        self.state = self.value
+
+        return self.state
 
     def test_connection(self):
         '''
