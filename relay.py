@@ -34,28 +34,21 @@ class Relay(gpiozero.OutputDevice):
         self.board_type = board_type.lower()
         self.active_high = self._set_active_high()
         gpiozero.OutputDevice.__init__(self, self.GPIO_pin, active_high=self.active_high, *args, **kwargs)
-        self.state = self._set_state()
+        self.state = self.get_state()
 
     def _set_active_high(self):
         return False if self.board_type == 'sainsmart' else True
 
-    def _set_state(self):
-        self.state = self.value
-
     def activate(self):
         self.on()
-        self._set_state()
+        self.state = self.get_state()
 
     def deactivate(self):
         self.off()
-        self._set_state
-
-    def toggle(self):
-        self.toggle()
-        self._set_state()
+        self.state = self.get_state()
 
     def get_state(self):
-        return self.state
+        return self.value
 
     def test_connection(self):
         '''
