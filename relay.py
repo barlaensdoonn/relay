@@ -1,12 +1,10 @@
 #!/usr/bin/python3
 # murmur - 4-channel relay board
 # 12/7/17
-# updated: 1/15/18
+# updated: 4/15/18
 
 # find GPIO pin mappings here:
 # https://gpiozero.readthedocs.io/en/stable/recipes.html#pin-numbering
-
-# TODO: implement _set_state() as a decorator
 
 import time
 import gpiozero
@@ -27,7 +25,8 @@ class Relay(gpiozero.OutputDevice):
         the base class's __init__, otherwise it will be overridden
         more here: https://stackoverflow.com/questions/6396452/python-derived-class-and-base-class-attributes#6396839
 
-        active_high=False initializes the Sainsmart relays as off
+        change board type to 'sainsmart' to set active_high=False,
+        which initializes the common Sainsmart relays as off
         '''
 
         self.GPIO_pin = pin
@@ -56,12 +55,13 @@ class Relay(gpiozero.OutputDevice):
         do this BEFORE hooking up anything to the relay and watch LED on the relay board
         '''
 
-        self.toggle()
+        self.on()
         time.sleep(1)
-        self.toggle()
+        self.off()
 
 
 if __name__ == '__main__':
+    # the following is an example of how to test multiple relays connected to one Pi
     pins = [4, 5, 6, 13]  # list to store GPIO pins being used
     relays = [Relay(pin) for pin in pins]  # list to hold initialized Relay objects
 
